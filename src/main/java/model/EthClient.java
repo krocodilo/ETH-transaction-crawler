@@ -10,6 +10,7 @@ import org.web3j.protocol.http.HttpService;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class EthClient {
 
@@ -74,7 +75,7 @@ public class EthClient {
             ArrayList<EthBlock.TransactionObject> transactions = new ArrayList<>();
 
             // Search every transaction in every block
-            br.send().getResponses().forEach( (elem) -> {
+            br.sendAsync().get(300, TimeUnit.SECONDS).getResponses().forEach( (elem) -> {
                 EthBlock block = (EthBlock) elem;
                 transactions.addAll( searchBlockTransactions(block.getBlock()) );
                 }
